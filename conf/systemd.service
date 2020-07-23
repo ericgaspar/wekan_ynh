@@ -15,7 +15,6 @@ Restart=on-failure
 #StartLimitBurst=5
 RestartSec=10
 ExecReload=/bin/kill -USR1 $MAINPID
-RestartSec=10
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=__APP__

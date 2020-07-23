@@ -7,7 +7,6 @@
 #=================================================
 
 source _common.sh
-source ynh_detect_arch__2
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -37,13 +36,6 @@ app=$YNH_APP_INSTANCE_NAME
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================
 ynh_print_info --message="Validating installation parameters..."
-
-architecture=$(ynh_detect_arch)
-# Check machine architecture (in particular, we don't support ARM and 32bit machines)
-if [ $architecture == "i386" ] || [ $architecture == "arm" ]
-then
-	ynh_die --message="Sorry, but this app can only be installed on a x86, 64 bits machine :("
-fi
 
 final_path=/var/www/$app
 test ! -e "$final_path" || ynh_die --message="This path already contains a folder"
@@ -107,7 +99,7 @@ ynh_print_info --message="Setting up source files..."
 
 ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 # Download, check integrity, uncompress and patch the source from app.src
-ynh_setup_source --dest_dir="$final_path" --source_id="$architecture"
+ynh_setup_source --dest_dir="$final_path"
 
 #=================================================
 # NGINX CONFIGURATION
@@ -142,15 +134,14 @@ ynh_add_systemd_config
 #=================================================
 ynh_print_info --message="Modifying a config file..."
 
-config_file="$final_path/.env"
-cp "../conf/.env" $config_file
+cp ../conf/.env $final_path/.env
 
-ynh_replace_string --match_string="__NODEJS_PATH__" --replace_string="$nodejs_path" --target_file="$config_file"
-ynh_replace_string --match_string="__DB_NAME__" --replace_string="$db_name" --target_file="$config_file"
-ynh_replace_string --match_string="__DOMAIN__" --replace_string="$domain" --target_file="$config_file"
-ynh_replace_string --match_string="__DOMAIN_URI__" --replace_string="$domain$path_url" --target_file="$config_file"
-ynh_replace_string --match_string="__PORT__" --replace_string="$port" --target_file="$config_file"
-ynh_replace_string --match_string="__APP__" --replace_string="$app" --target_file="$config_file"
+ynh_replace_string --match_string="__NODEJS_PATH__" --replace_string="$nodejs_path" --target_file="$final_path/.env"
+ynh_replace_string --match_string="__DB_NAME__" --replace_string="$db_name" --target_file="$final_path/.env"
+ynh_replace_string --match_string="__DOMAIN__" --replace_string="$domain" --target_file="$final_path/.env"
+ynh_replace_string --match_string="__DOMAIN_URI__" --replace_string="$domain$path_url" --target_file="$final_path/.env"
+ynh_replace_string --match_string="__PORT__" --replace_string="$port" --target_file="$final_path/.env"
+ynh_replace_string --match_string="__APP__" --replace_string="$app" --target_file="$final_path/.env"
 
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
@@ -186,10 +177,7 @@ yunohost service add mongodb --description "MongoDB daemon" --log "/var/log/mong
 ynh_print_info --message="Starting a systemd service..."
 
 # Start a systemd service
-ynh_systemd_action --service_name=$app --action="start" --log_path=systemd --line_match="Meteor APM: completed instrumenting the app"
-if [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
-	sleep 60
-fi
+ynh_systemd_action --service_name=$app --action="start" --log_path=systemd #--line_match="Meteor APM: completed instrumenting the app"
 
 #=================================================
 # SETUP SSOWAT

@@ -7,8 +7,6 @@
 #=================================================
 
 source _common.sh
-source ynh_package_version
-source ynh_detect_arch__2
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -154,7 +152,7 @@ then
 
   architecture=$(ynh_detect_arch)
   # Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$final_path" --source_id="$architecture"
+	ynh_setup_source --dest_dir="$final_path"
   
   #Copy the admin saved settings from tmp directory to final path
   cp -a  "$tmpdir/.env" "$final_path/.env"
