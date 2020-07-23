@@ -177,7 +177,7 @@ yunohost service add mongodb --description "MongoDB daemon" --log "/var/log/mong
 ynh_print_info --message="Starting a systemd service..."
 
 # Start a systemd service
-ynh_systemd_action --service_name=$app --action="start" --log_path=systemd #--line_match="Meteor APM: completed instrumenting the app"
+ynh_systemd_action --service_name=$app --action="start" --log_path=systemd --line_match="Meteor APM: completed instrumenting the app"
 
 #=================================================
 # SETUP SSOWAT
