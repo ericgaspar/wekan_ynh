@@ -37,7 +37,7 @@ ynh_detect_arch(){
 
 
 read_json () {
-    sudo python3 -c "import sys, json;print(json.load(open('$1'))['$2'])"
+    python3 -c "import sys, json;print(json.load(open('$1'))['$2'])"
 }
 
 read_manifest () {
