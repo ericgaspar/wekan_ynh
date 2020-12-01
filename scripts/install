@@ -77,7 +77,7 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 ynh_script_progression --message="Installing dependencies..."
 
 ynh_install_app_dependencies $pkg_dependencies
-ynh_install_nodejs --nodejs_version=$nodejsversion
+ynh_install_nodejs --nodejs_version=$nodejs_version
 ynh_use_nodejs
 ynh_install_mongo
 
@@ -104,7 +104,7 @@ ynh_setup_source --dest_dir="$final_path" --source_id="$architecture"
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Configuring nginx web server..."
+ynh_script_progression --message="Configuring NGINX web server..."
 
 # Create a dedicated nginx config
 ynh_add_nginx_config
@@ -183,7 +183,7 @@ fi
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_script_progression --message="Reloading nginx web server..."
+ynh_script_progression --message="Reloading NGINX web server..."
 
 ynh_systemd_action --service_name=nginx --action=reload
 

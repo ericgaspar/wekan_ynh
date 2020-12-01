@@ -9,7 +9,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 ## Overview
 Wekan is an open-source kanban board (task manager and organizer)
 
-**Shipped version:** 4.43
+**Shipped version:** 4.56
 
 ## Screenshots
 
@@ -65,7 +65,7 @@ LDAP is supported but HTTP auth is still not supported
 
 ---
 
-Developer info
+## Developer info
 
 Please send your pull request to the [testing branch](https://github.com/YunoHost-Apps/wekan_ynh/tree/testing).
 

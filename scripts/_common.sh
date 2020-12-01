@@ -7,7 +7,7 @@
 # dependencies used by the app
 pkg_dependencies=""
 
-nodejsversion=12.16.3
+nodejs_version=12
 
 #=================================================
 # PERSONAL HELPERS
